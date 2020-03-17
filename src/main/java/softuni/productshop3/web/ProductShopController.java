@@ -27,6 +27,8 @@ public class ProductShopController implements CommandLineRunner {
             "C:\\Users\\user l\\Desktop\\productshop3\\src\\main\\resources\\files\\output\\categories-by-product-count.json";
     private static final String OUTPUT3_PATH =
             "C:\\Users\\user l\\Desktop\\productshop3\\src\\main\\resources\\files\\output\\users-sold-products.json";
+    private static final String OUTPUT4_PATH =
+            "C:\\Users\\user l\\Desktop\\productshop3\\src\\main\\resources\\files\\output\\users-and-products.json";
     private final FileIOUtil fileIOUtil;
     private final UserService userService;
     private final ProductService productService;
@@ -49,9 +51,16 @@ public class ProductShopController implements CommandLineRunner {
         
        // this.productsInRange();
         //this.categoriesByProductCount();
-        this.successfullySoldProducts();
+       // this.successfullySoldProducts();
+        this.getUsersWithAtLeastOneProduct();
 
         
+    }
+
+    private void getUsersWithAtLeastOneProduct() throws IOException {
+       CountAndUsersDto countAndUsersDto = this.userService.getUsersCountAndInfo();
+       String json = this.gson.toJson(countAndUsersDto);
+       this.fileIOUtil.writeFile(json,OUTPUT4_PATH);
     }
 
     private void successfullySoldProducts() throws IOException {

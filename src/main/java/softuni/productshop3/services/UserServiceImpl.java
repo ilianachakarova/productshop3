@@ -4,9 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import softuni.productshop3.domain.dtos.ProductByUserDto;
-import softuni.productshop3.domain.dtos.UserSeedDto;
-import softuni.productshop3.domain.dtos.UserSoldProductsDto;
+import softuni.productshop3.domain.dtos.*;
 import softuni.productshop3.domain.entities.Product;
 import softuni.productshop3.domain.entities.User;
 import softuni.productshop3.repository.UserRepository;
@@ -55,6 +53,44 @@ public class UserServiceImpl implements UserService {
         }
 
         return userSoldProductsDtos;
+    }
+    @Transactional
+    @Override
+    public CountAndUsersDto getUsersCountAndInfo() {
+        List<User> users = this.userRepository.getUsersByProductAtLeastOne();
+        CountAndUsersDto countAndUsersDto = new CountAndUsersDto();
+        countAndUsersDto.setCount(users.size());
+        countAndUsersDto.setUsers(this.setUsersAndProducts(users));
+        System.out.println();
+        return countAndUsersDto;
+    }
+
+    private List<UserAndProductsDto> setUsersAndProducts(List<User> users) {
+        List<UserAndProductsDto> userAndProductsDtos = new ArrayList<>();
+        for (User user : users) {
+            UserAndProductsDto userAndProductsDto = modelMapper.map(user,UserAndProductsDto.class);
+            userAndProductsDto.setSoldProducts(this.setSoldProductsByUser(user));
+            userAndProductsDtos.add(userAndProductsDto);
+        }
+        return userAndProductsDtos;
+    }
+
+    private List<CountAndProductDto> setSoldProductsByUser(User user) {
+        Set<Product> soldProducts = user.getProductsSold();
+        CountAndProductDto countAndProductDto = new CountAndProductDto();
+        countAndProductDto.setCount(soldProducts.size());
+        countAndProductDto.setProducts(this.setProductAndPrice(user));
+        return List.of(countAndProductDto);
+    }
+
+    private List<ProductDto> setProductAndPrice(User user) {
+        Set<Product> productsSold = user.getProductsSold();
+        List<ProductDto> productDtos = new ArrayList<>();
+        for (Product product : productsSold) {
+            ProductDto productDto = modelMapper.map(product, ProductDto.class);
+            productDtos.add(productDto);
+        }
+        return productDtos;
     }
 
     private List<ProductByUserDto> setProductsSold(long id) {
