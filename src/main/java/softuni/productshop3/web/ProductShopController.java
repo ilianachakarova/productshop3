@@ -22,13 +22,13 @@ public class ProductShopController implements CommandLineRunner {
     private static final String PRODUCT_FILE_PATH =
             "C:\\Users\\user l\\Desktop\\productshop3\\src\\main\\resources\\files\\products.json";
     private static final String OUTPUT1_PATH =
-            "C:\\Users\\user l\\Desktop\\productshop3\\src\\main\\resources\\files\\output\\products-in-range.json";
+            "src/main/resources/files/output/products-in-range.json";
     private static final String OUTPUT2_PATH =
             "C:\\Users\\user l\\Desktop\\productshop3\\src\\main\\resources\\files\\output\\categories-by-product-count.json";
     private static final String OUTPUT3_PATH =
             "C:\\Users\\user l\\Desktop\\productshop3\\src\\main\\resources\\files\\output\\users-sold-products.json";
     private static final String OUTPUT4_PATH =
-            "C:\\Users\\user l\\Desktop\\productshop3\\src\\main\\resources\\files\\output\\users-and-products.json";
+            "src/main/resources/files/output/users-and-products.json";
     private final FileIOUtil fileIOUtil;
     private final UserService userService;
     private final ProductService productService;
